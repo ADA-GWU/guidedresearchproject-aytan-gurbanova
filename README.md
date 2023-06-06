@@ -4,4 +4,4 @@
 
 **Class Name:** Research Guide
 
-**Current Proposal Name:** A Comparative Study: Monolithic vs. Microservices Architectures
+**Study Name:** A Comparative Study: Monolithic vs. Microservices Architectures
