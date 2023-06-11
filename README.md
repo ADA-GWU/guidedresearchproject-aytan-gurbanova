@@ -6,6 +6,8 @@
 
 **Study Name:** A Comparative Study: Monolithic vs. Microservices Architectures
 
-The purpose of the study is to compare monolithic architecture with microservices by creating a simple E-commerce application. The application development is being carried out in the **development** branch.
+The purpose of the study is to compare monolithic architecture with microservices by creating a simple E-commerce application. 
 
-Once the development is finished, all the work will be merged into the main branch.
+The high-level system design of the application is as following:
+
+![Alt text](https://github.com/ADA-GWU/guidedresearchproject-aytan-gurbanova/blob/34fcfb88bb325b0cd76b24fa5e60ba61874aa8c6/img/e-comm.png)
