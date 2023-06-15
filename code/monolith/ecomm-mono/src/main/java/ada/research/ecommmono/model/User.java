@@ -15,7 +15,8 @@ import java.util.Collections;
 @Setter
 @NoArgsConstructor
 @Entity
-public class UserProfile implements UserDetails {
+@Table(name = "users")
+public class User implements UserDetails {
     @SequenceGenerator(
             name = "user_sequence",
             sequenceName = "user_sequence",
@@ -36,11 +37,13 @@ public class UserProfile implements UserDetails {
     private String address;
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
+    @Column(nullable = false, columnDefinition = "boolean default false")
     private Boolean locked;
+    @Column(nullable = false, columnDefinition = "boolean default true")
     private Boolean enabled;
 
-    public UserProfile(String email, String password, String firstName, String lastName, String phoneNumber, String address,
-                       UserRole userRole, Boolean locked, Boolean enabled) {
+    public User(String email, String password, String firstName, String lastName, String phoneNumber, String address,
+                UserRole userRole, Boolean locked, Boolean enabled) {
         this.email = email;
         this.password = password;
         this.firstName = firstName;
