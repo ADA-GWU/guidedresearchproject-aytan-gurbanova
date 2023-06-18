@@ -1,19 +1,22 @@
 package ada.research.ecommmono.model;
 
-import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 import jakarta.annotation.Nullable;
+import jakarta.persistence.*;
+import lombok.*;
+import org.hibernate.Hibernate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
+import java.util.Objects;
 
-@Getter
-@Setter
+@Data
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "users")
 public class User implements UserDetails {
@@ -25,6 +28,7 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_sequence")
     private Long id;
+    @Column(unique = true)
     private String email;
     private String password;
     @Nullable
@@ -37,13 +41,13 @@ public class User implements UserDetails {
     private String address;
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
-    @Column(nullable = false, columnDefinition = "boolean default false")
     private Boolean locked;
-    @Column(nullable = false, columnDefinition = "boolean default true")
     private Boolean enabled;
+    private Date createdAt;
+    private Date updatedAt;
 
     public User(String email, String password, String firstName, String lastName, String phoneNumber, String address,
-                UserRole userRole, Boolean locked, Boolean enabled) {
+                UserRole userRole, Boolean locked, Boolean enabled, Date createdAt, Date updatedAt) {
         this.email = email;
         this.password = password;
         this.firstName = firstName;
@@ -53,6 +57,8 @@ public class User implements UserDetails {
         this.userRole = userRole;
         this.locked = locked;
         this.enabled = enabled;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
     @Override
@@ -89,5 +95,18 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return enabled;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        User user = (User) o;
+        return id != null && Objects.equals(id, user.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 }
