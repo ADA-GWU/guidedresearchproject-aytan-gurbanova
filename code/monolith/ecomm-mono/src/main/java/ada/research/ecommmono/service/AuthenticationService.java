@@ -3,6 +3,8 @@ package ada.research.ecommmono.service;
 import ada.research.ecommmono.model.*;
 import ada.research.ecommmono.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,16 +22,20 @@ public class AuthenticationService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
 
-    public AuthenticationResponse register(RegisterRequest request) {
+    public ResponseEntity<AuthenticationResponse> register(RegisterRequest request) {
         logger.info(String.format("register method started with request: %s",
                 request.toString()));
         // check whether user with the same email already exists or not
         var u = userRepository.findByEmail(request.getEmail());
         if (u.isPresent()){
             String email = u.get().getEmail();
-            String message = String.format("User with %s email already exists", email);
+            String message = String.format("User with %s email already exists.", email);
             logger.severe(message);
-            return AuthenticationResponse.builder().message(message).build();
+            AuthenticationResponse errorResponse = AuthenticationResponse
+                    .builder()
+                    .message(message)
+                    .build();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
         }
         var user = User.builder()
                 .firstName(request.getFirstName())
@@ -48,7 +54,11 @@ public class AuthenticationService {
         var token = jwtService.generateToken(user);
         logger.info("Token generated");
         logger.info("AuthenticationService - register method ended");
-        return AuthenticationResponse.builder().token(token).message("Success").build();
+        AuthenticationResponse successResponse = AuthenticationResponse.builder()
+                .token(token)
+                .message("User successfully registered.")
+                .build();
+        return ResponseEntity.ok(successResponse);
     }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request){
@@ -66,6 +76,6 @@ public class AuthenticationService {
         var token = jwtService.generateToken(user);
         logger.info("Token generated");
         logger.info("AuthenticationService - authenticate method ended");
-        return AuthenticationResponse.builder().token(token).build();
+        return AuthenticationResponse.builder().token(token).message("Success").build();
     }
 }
