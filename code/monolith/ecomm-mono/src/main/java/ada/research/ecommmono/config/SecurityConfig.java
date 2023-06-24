@@ -24,7 +24,9 @@ public class SecurityConfig {
                 .csrf()
                 .disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/mono/v1/auth/**") // list of whitelisted requests
+                .requestMatchers(
+                        "/mono/v1/auth/**",
+                                 "/mono/v1/admin/**") // list of whitelisted requests
                 .permitAll()
                 .anyRequest()
                 .authenticated()
