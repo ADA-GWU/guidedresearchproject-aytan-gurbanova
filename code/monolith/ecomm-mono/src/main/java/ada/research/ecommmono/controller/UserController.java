@@ -1,7 +1,6 @@
 package ada.research.ecommmono.controller;
 
 import ada.research.ecommmono.model.UserUpdateRequest;
-import ada.research.ecommmono.model.User;
 import ada.research.ecommmono.model.UserUpdateResponse;
 import ada.research.ecommmono.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -15,13 +14,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequiredArgsConstructor
 @RequestMapping("/mono/v1/user")
 public class UserController {
-    private final UserService userService;
+    private final UserService service;
 
     @PutMapping("/update")
     public ResponseEntity<UserUpdateResponse> updateUserInformation(
             @RequestBody UserUpdateRequest userUpdateRequest
             ) {
-        UserUpdateResponse updatedUser = userService.updateUser(
+        UserUpdateResponse updatedUser = service.updateUser(
                 userUpdateRequest.getEmail(),
                 userUpdateRequest.getAddress(),
                 userUpdateRequest.getPhoneNumber());
