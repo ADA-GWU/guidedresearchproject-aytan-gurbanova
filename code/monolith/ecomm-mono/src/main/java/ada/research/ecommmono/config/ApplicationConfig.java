@@ -22,7 +22,7 @@ public class ApplicationConfig {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        logger.info("ApplicationConfig - userDetailsService method started");
+        logger.info("userDetailsService method started");
         return username -> repository.findByEmail(username)
                 .orElseThrow(() -> new UsernameNotFoundException(String.format("User with email %s is not found.",
                         username)));
@@ -30,29 +30,29 @@ public class ApplicationConfig {
 
     @Bean
     public AuthenticationProvider authenticationProvider() {
-        logger.info("ApplicationConfig - authenticationProvider method started");
+        logger.info("authenticationProvider method started");
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
         authenticationProvider.setUserDetailsService(userDetailsService());
         authenticationProvider.setPasswordEncoder(passwordEncoder());
-        logger.info("ApplicationConfig - authenticationProvider bean created");
-        logger.info("ApplicationConfig - authenticationProvider method ended");
+        logger.info("authenticationProvider bean created");
+        logger.info("authenticationProvider method ended");
         return authenticationProvider;
     }
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
-        logger.info("ApplicationConfig - authenticationManager method started");
+        logger.info("authenticationManager method started");
         var manager = config.getAuthenticationManager();
-        logger.info("ApplicationConfig - authenticationManager bean created");
-        logger.info("ApplicationConfig - authenticationManager method ended");
+        logger.info("authenticationManager bean created");
+        logger.info("authenticationManager method ended");
         return manager;
     }
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
-        logger.info("ApplicationConfig - passwordEncoder method started");
-        logger.info("ApplicationConfig - passwordEncoder bean created");
-        logger.info("ApplicationConfig - passwordEncoder method ended");
+        logger.info("passwordEncoder method started");
+        logger.info("passwordEncoder bean created");
+        logger.info("passwordEncoder method ended");
         return new BCryptPasswordEncoder();
     }
 }

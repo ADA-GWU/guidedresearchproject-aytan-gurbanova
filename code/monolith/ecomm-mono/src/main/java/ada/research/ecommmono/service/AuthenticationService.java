@@ -53,7 +53,7 @@ public class AuthenticationService {
 
         var token = jwtService.generateToken(user);
         logger.info("Token generated");
-        logger.info("AuthenticationService - register method ended");
+        logger.info("register method ended");
         AuthenticationResponse successResponse = AuthenticationResponse.builder()
                 .token(token)
                 .message("User successfully registered.")
@@ -62,7 +62,7 @@ public class AuthenticationService {
     }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request){
-        logger.info(String.format("AuthenticationService - authenticate method started with request: %s",
+        logger.info(String.format("authenticate method started with request: %s",
                 request.toString()));
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 request.getEmail(),
@@ -75,7 +75,7 @@ public class AuthenticationService {
 
         var token = jwtService.generateToken(user);
         logger.info("Token generated");
-        logger.info("AuthenticationService - authenticate method ended");
+        logger.info("authenticate method ended");
         return AuthenticationResponse.builder().token(token).message("Success").build();
     }
 }

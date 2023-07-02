@@ -23,15 +23,15 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        logger.info("UserService - loadUserByUsername started for email: {}", email);
+        logger.info("loadUserByUsername started for email: {}", email);
         UserDetails userDetails = repository.findByEmail(email).orElseThrow(
                 () -> new UsernameNotFoundException(String.format(USER_NOT_FOUND_MESSAGE, email)));
-        logger.info("UserService - loadUserByUsername ended for email: {}", email);
+        logger.info("loadUserByUsername ended for email: {}", email);
         return userDetails;
     }
 
     public UserUpdateResponse updateUser(String email, String address, String phoneNumber) {
-        logger.info("UserService - updateUser started for email: {}", email);
+        logger.info("updateUser started for email: {}", email);
         User user = repository.findByEmail(email).orElseThrow(
                 () -> new UsernameNotFoundException(String.format(USER_NOT_FOUND_MESSAGE, email)));
         if (user != null) {
@@ -44,10 +44,10 @@ public class UserService implements UserDetailsService {
                     updatedUser.getAddress(), updatedUser.getPhoneNumber(),
                     updatedUser.getCreatedAt(), updatedUser.getUpdatedAt()
             );
-            logger.info("UserService - updateUser ended for email: {}", email);
+            logger.info("updateUser ended for email: {}", email);
             return userUpdateResponse;
         }
-        logger.info("UserService - updateUser ended for email: {}. User not found.", email);
+        logger.info("updateUser ended for email: {}. User not found.", email);
         return null;
     }
 }

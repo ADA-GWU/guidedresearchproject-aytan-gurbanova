@@ -31,14 +31,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             @NonNull HttpServletRequest request,
             @NonNull HttpServletResponse response,
             @NonNull FilterChain filterChain) throws ServletException, IOException {
-        logger.info("JwtAuthenticationFilter - doFilterInternal method started");
+        logger.info("doFilterInternal method started");
 
         final String authHeader = request.getHeader("Authorization");
         final String jwt;
         final String email;
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
-            logger.info("JwtAuthenticationFilter - doFilterInternal method ended");
+            logger.info("doFilterInternal method ended");
             return;
         }
         jwt = authHeader.substring(7);
@@ -56,6 +56,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         filterChain.doFilter(request, response);
-        logger.info("JwtAuthenticationFilter - doFilterInternal method ended");
+        logger.info("doFilterInternal method ended");
     }
 }
