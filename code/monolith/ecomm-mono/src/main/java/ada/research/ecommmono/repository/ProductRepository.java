@@ -9,16 +9,16 @@ import java.util.List;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
         @Query("SELECT p FROM Product p WHERE (:brand IS NULL OR p.brand = :brand) " +
-                "AND (:product_name IS NULL OR p.name = :product_name) " +
-                "AND (:category_name IS NULL OR p.category.name = :category_name) " +
-                "AND (:price_min IS NULL OR p.price >= :price_min) " +
-                "AND (:price_max IS NULL OR p.price <= :price_max)")
+                "AND (:productName IS NULL OR p.name = :productName) " +
+                "AND (:categoryName IS NULL OR p.category.name = :categoryName) " +
+                "AND (:priceMin IS NULL OR p.price >= :priceMin) " +
+                "AND (:priceMax IS NULL OR p.price <= :priceMax)")
         List<Product> filterProducts(
                 String brand,
-                String product_name,
-                String category_name,
-                Float price_min,
-                Float price_max
+                String productName,
+                String categoryName,
+                Float priceMin,
+                Float priceMax
     );
         @Query("SELECT p FROM Product p WHERE " +
                 "LOWER(p.brand) LIKE CONCAT('%', LOWER(:keyword), '%') OR " +

@@ -18,7 +18,6 @@ import java.util.Date;
 public class UserService implements UserDetailsService {
     private final UserRepository repository;
     private final static String USER_NOT_FOUND_MESSAGE = "User with email %s not found.";
-
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
     @Override

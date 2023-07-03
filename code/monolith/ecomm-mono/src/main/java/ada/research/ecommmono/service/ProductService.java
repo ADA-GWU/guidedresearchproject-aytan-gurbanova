@@ -16,12 +16,12 @@ public class ProductService {
     private final ProductRepository repository;
     private static final Logger logger = Logger.getLogger(ApplicationConfig.class.getName());
     public List<Product> filterProducts(String brand,
-                                        String product_name,
-                                        String category_name,
-                                        Float price_min,
-                                        Float price_max){
+                                        String productName,
+                                        String categoryName,
+                                        Float priceMin,
+                                        Float priceMax){
         logger.log(Level.INFO, "filterProducts method started");
-        List<Product> products = repository.filterProducts(brand, product_name, category_name, price_min, price_max);
+        List<Product> products = repository.filterProducts(brand, productName, categoryName, priceMin, priceMax);
         logger.log(Level.INFO, "filterProducts method ended");
         return products;
     }

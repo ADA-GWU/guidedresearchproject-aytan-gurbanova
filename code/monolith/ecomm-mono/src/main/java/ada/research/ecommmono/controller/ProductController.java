@@ -19,12 +19,12 @@ public class ProductController {
     @GetMapping("/filter")
     public List<Product> filterProducts(
             @RequestParam(required = false) String brand,
-            @RequestParam(required = false) String product_name,
-            @RequestParam(required = false) String category_name,
-            @RequestParam(required = false) Float price_min,
-            @RequestParam(required = false) Float price_max
+            @RequestParam(required = false) String productName,
+            @RequestParam(required = false) String categoryName,
+            @RequestParam(required = false) Float priceMin,
+            @RequestParam(required = false) Float priceMax
     ){
-        return service.filterProducts(brand, product_name, category_name, price_min, price_max);
+        return service.filterProducts(brand, productName, categoryName, priceMin, priceMax);
     }
 
     @GetMapping("/search")
