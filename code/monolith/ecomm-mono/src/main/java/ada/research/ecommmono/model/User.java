@@ -61,10 +61,6 @@ public class User implements UserDetails {
         this.updatedAt = updatedAt;
     }
 
-    public User(long id) {
-        this.id = id;
-    }
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         SimpleGrantedAuthority authority = new SimpleGrantedAuthority(userRole.name());
