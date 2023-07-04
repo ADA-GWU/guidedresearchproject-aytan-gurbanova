@@ -10,4 +10,8 @@ The purpose of the study is to compare monolithic architecture with microservice
 
 The high-level system design of the application is as following:
 
-![Alt text](https://github.com/ADA-GWU/guidedresearchproject-aytan-gurbanova/blob/34fcfb88bb325b0cd76b24fa5e60ba61874aa8c6/img/e-comm.png)
+![Alt text](https://github.com/ADA-GWU/guidedresearchproject-aytan-gurbanova/blob/f5ad5c3fb071d16046edb48d40a6ac7284062430/img/e-comm%20design.png)
+
+DB design:
+
+![Alt text](https://github.com/ADA-GWU/guidedresearchproject-aytan-gurbanova/blob/f5ad5c3fb071d16046edb48d40a6ac7284062430/img/db%20design.png)
