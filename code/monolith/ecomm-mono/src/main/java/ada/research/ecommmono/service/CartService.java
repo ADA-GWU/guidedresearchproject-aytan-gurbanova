@@ -1,6 +1,7 @@
 package ada.research.ecommmono.service;
 
 import ada.research.ecommmono.model.Cart;
+import ada.research.ecommmono.model.CartResponse;
 import ada.research.ecommmono.model.Product;
 import ada.research.ecommmono.model.User;
 import ada.research.ecommmono.repository.CartRepository;
@@ -8,12 +9,15 @@ import ada.research.ecommmono.repository.ProductRepository;
 import ada.research.ecommmono.repository.UserRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -37,7 +41,7 @@ public class CartService {
             if (optionalCart.isPresent()) {
                 // if cart exists for the user and product, update the quantity
                 cart = optionalCart.get();
-                cart.setQuantity(cart.getQuantity() + 1);
+                cart.setQuantity(cart.getQuantity() + quantity);
                 cart.setUpdatedAt(new Date());
                 logger.info("Existing cart updated");
             } else {
@@ -57,5 +61,43 @@ public class CartService {
             // TODO: handle error later
             return null;
         }
+    }
+
+    public List<Cart> viewCart(long userId){
+        logger.info("viewCart method started");
+        List<Cart> cartList = cartRepository.findByUserId(userId);
+        logger.info("viewCart method ended");
+        return cartList;
+    }
+
+    @Transactional
+    public List<Cart> removeProduct(long userId, long productId){
+        logger.info("removeProduct method started");
+        Optional<Product> optionalProduct = productRepository.findById(productId);
+        if (optionalProduct.isPresent()){
+            cartRepository.removeProduct(userId, productId);
+            List<Cart> cartList = cartRepository.findByUserId(userId);
+            logger.info("removeProduct method ended");
+            return cartList;
+        }
+        else {
+            // TODO: handle error later
+            return null;
+        }
+    }
+
+    public List<CartResponse> convertToCartResponse(List<Cart> cartList){
+        logger.info("convertToCartResponse method started");
+        List<CartResponse> cartResponseList = cartList.stream()
+                .map(cart -> CartResponse.builder()
+                        .email(cart.getUser().getEmail())
+                        .productName(cart.getProduct().getName())
+                        .quantity(cart.getQuantity())
+                        .createdAt(cart.getCreatedAt())
+                        .updatedAt(cart.getUpdatedAt())
+                        .build())
+                .collect(Collectors.toList());
+        logger.info("convertToCartResponse method ended");
+        return cartResponseList;
     }
 }

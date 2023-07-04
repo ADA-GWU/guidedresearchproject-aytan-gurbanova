@@ -1,11 +1,14 @@
 package ada.research.ecommmono.service;
 
+import ada.research.ecommmono.model.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -80,6 +83,12 @@ public class JwtService {
         boolean isValid = (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
         logger.log(Level.INFO, "isTokenValid method ended");
         return isValid;
+    }
+
+    public Long extractUserId(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) authentication.getPrincipal();
+        return user.getId();
     }
 
     private boolean isTokenExpired(String token) {
