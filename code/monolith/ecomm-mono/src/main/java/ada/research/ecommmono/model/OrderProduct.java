@@ -13,17 +13,17 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "carts")
-public class Cart {
-    @SequenceGenerator(name = "cart_sequence",
-            sequenceName = "cart_sequence",
+@Table(name = "orders_products")
+public class OrderProduct {
+    @SequenceGenerator(name = "order_pr_sequence",
+            sequenceName = "order_pr_sequence",
             allocationSize = 1)
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "cart_sequence")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "order_pr_sequence")
     private Long id;
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private User user;
+    @JoinColumn(name = "order_id", referencedColumnName = "id")
+    private Order order;
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "product_id", referencedColumnName = "id")
     private Product product;

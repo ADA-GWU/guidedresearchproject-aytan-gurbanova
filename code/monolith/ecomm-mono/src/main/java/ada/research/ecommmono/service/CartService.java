@@ -77,6 +77,13 @@ public class CartService {
         if (optionalProduct.isPresent()){
             cartRepository.removeProduct(userId, productId);
             List<Cart> cartList = cartRepository.findByUserId(userId);
+            List<Cart> zeroQuantityCarts = cartList.stream().filter(cart -> cart.getQuantity() == 0).toList();
+
+            if (!zeroQuantityCarts.isEmpty()) {
+                // remove rows with quantity 0
+                zeroQuantityCarts.forEach(cart -> cartRepository.removeByProductIdAndUserId(userId, productId));
+            }
+            cartList = cartRepository.findByUserId(userId);
             logger.info("removeProduct method ended");
             return cartList;
         }
