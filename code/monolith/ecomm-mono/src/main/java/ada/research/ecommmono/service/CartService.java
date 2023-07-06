@@ -7,8 +7,6 @@ import ada.research.ecommmono.model.User;
 import ada.research.ecommmono.repository.CartRepository;
 import ada.research.ecommmono.repository.ProductRepository;
 import ada.research.ecommmono.repository.UserRepository;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;

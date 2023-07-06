@@ -28,6 +28,4 @@ public class OrderProduct {
     @JoinColumn(name = "product_id", referencedColumnName = "id")
     private Product product;
     private Integer quantity;
-    private Date createdAt;
-    private Date updatedAt;
 }
