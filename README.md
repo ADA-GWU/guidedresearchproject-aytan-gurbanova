@@ -224,6 +224,172 @@ HTTP Status: 200 OK
 ]
 ```
 
+### Cart APIs
+#### Add to Cart
 
+Adds a product to the user's cart.
 
+**URL:** /mono/v1/cart/add
+
+**Method:** POST
+
+**Auth Required:** Yes
+
+**Parameters:**
+
+- productId (required): ID of the product to add to the cart
+- quantity (required): Quantity of the product to add
+
+Example Request: http://localhost:8080/mono/v1/cart/add?productId=2&quantity=5
+
+**Response**
+
+HTTP Status: 200 OK
+
+```json
+{
+    "email": "johns@gmail.com",
+    "productName": "Nike",
+    "quantity": 5,
+    "createdAt": "2023-07-15T02:30:10.674+00:00",
+    "updatedAt": "2023-07-15T02:30:10.674+00:00"
+}
+```
+
+#### View Cart
+
+Retrieves the user's cart.
+
+**URL:** /mono/v1/cart/view
+
+**Method:** GET
+
+**Auth Required:** Yes
+
+**Response**
+
+HTTP Status: 200 OK
+
+```json
+[
+    {
+        "email": "johns@gmail.com",
+        "productName": "Nike",
+        "quantity": 5,
+        "createdAt": "2023-07-15T02:30:10.674+00:00",
+        "updatedAt": "2023-07-15T02:30:10.674+00:00"
+    }
+]
+```
+
+#### Remove Product
+Removes a product from the user's cart.
+
+**URL:** /mono/v1/cart/remove/product/{productId}
+
+**Method:** DELETE
+
+Path Parameter:
+
+productId (required): ID of the product to remove from the cart.
+
+Example Request: http://localhost:8080/mono/v1/cart/remove/product/2
+
+**Response**
+
+HTTP Status: 200 OK
+
+```json
+[
+    {
+        "email": "johns@gmail.com",
+        "productName": "Nike",
+        "quantity": 4,
+        "createdAt": "2023-07-15T02:30:10.674+00:00",
+        "updatedAt": "2023-07-15T03:00:47.145+00:00"
+    }
+]
+```
+
+### Order APIs
+#### Place Order
+
+Place an order with the specified list of order requests.
+
+**URL:** /mono/v1/order/place
+
+**Method:** POST
+
+**Auth Required:** Yes
+
+**Request Body**
+
+```json
+[
+    {
+    "productId": 8,
+    "quantity": 2
+  },
+  {
+    "productId": 2,
+    "quantity": 3
+  }
+]
+```
+
+**Response**
+
+HTTP Status: 200 OK
+
+```json
+{
+    "email": "johns@gmail.com",
+    "orderProduct": [
+        {
+            "productName": "IKEA",
+            "quantity": 2
+        },
+        {
+            "productName": "Nike",
+            "quantity": 3
+        }
+    ],
+    "totalAmount": 1675.0,
+    "createdAt": "2023-07-15T03:02:57.897+00:00",
+    "updatedAt": "2023-07-15T03:02:57.897+00:00"
+}
+```
+
+#### View Orders
+
+View the list of orders for the authenticated user.
+
+**URL:** /mono/v1/order/view
+
+**Method:** GET
+
+**Auth Required:** Yes
+
+**Response**
+
+HTTP Status: 200 OK
+
+```json
+{
+    "email": "johns@gmail.com",
+    "orderProduct": [
+        {
+            "productName": "IKEA",
+            "quantity": 2
+        },
+        {
+            "productName": "Nike",
+            "quantity": 3
+        }
+    ],
+    "totalAmount": 1675.0,
+    "createdAt": "2023-07-15T03:02:57.897+00:00",
+    "updatedAt": "2023-07-15T03:02:57.897+00:00"
+}
+```
 
