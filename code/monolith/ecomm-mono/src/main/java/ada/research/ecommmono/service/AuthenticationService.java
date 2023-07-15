@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +26,15 @@ public class AuthenticationService {
     public ResponseEntity<AuthenticationResponse> register(RegisterRequest request) {
         logger.info(String.format("register method started with request: %s",
                 request.toString()));
+        if (request.getEmail().isEmpty() || request.getPassword().isEmpty()) {
+            String message = "Email and password cannot be empty.";
+            logger.severe(message);
+            AuthenticationResponse errorResponse = AuthenticationResponse
+                    .builder()
+                    .message(message)
+                    .build();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+        }
         // check whether user with the same email already exists or not
         var u = userRepository.findByEmail(request.getEmail());
         if (u.isPresent()){
@@ -54,28 +64,45 @@ public class AuthenticationService {
         var token = jwtService.generateToken(user);
         logger.info("Token generated");
         logger.info("register method ended");
-        AuthenticationResponse successResponse = AuthenticationResponse.builder()
+        AuthenticationResponse successResponse = AuthenticationResponse
+                .builder()
                 .token(token)
                 .message("User successfully registered.")
                 .build();
         return ResponseEntity.ok(successResponse);
     }
 
-    public AuthenticationResponse authenticate(AuthenticationRequest request){
-        logger.info(String.format("authenticate method started with request: %s",
-                request.toString()));
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                request.getEmail(),
-                request.getPassword()
-        ));
-        logger.info("User authenticated");
+    public ResponseEntity<AuthenticationResponse> authenticate(AuthenticationRequest request) {
+        logger.info(String.format("authenticate method started with request: %s", request.toString()));
 
-        var user = userRepository.findByEmail(request.getEmail()).orElseThrow();
-        logger.info(String.format("User retrieved from database: %s", user));
+        try {
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                    request.getEmail(),
+                    request.getPassword()
+            ));
+            logger.info("User authenticated");
 
-        var token = jwtService.generateToken(user);
-        logger.info("Token generated");
-        logger.info("authenticate method ended");
-        return AuthenticationResponse.builder().token(token).message("Success").build();
+            var user = userRepository.findByEmail(request.getEmail()).orElseThrow();
+            logger.info(String.format("User retrieved from database: %s", user));
+
+            var token = jwtService.generateToken(user);
+            logger.info("Token generated");
+            logger.info("authenticate method ended");
+
+            AuthenticationResponse successResponse = AuthenticationResponse
+                    .builder()
+                    .token(token)
+                    .message("User successfully authenticated.")
+                    .build();
+            return ResponseEntity.ok(successResponse);
+
+        } catch (AuthenticationException e) {
+            logger.warning("Authentication failed: " + e.getMessage());
+            AuthenticationResponse errorResponse = AuthenticationResponse
+                    .builder()
+                    .message("Invalid email or password.")
+                    .build();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
+        }
     }
 }

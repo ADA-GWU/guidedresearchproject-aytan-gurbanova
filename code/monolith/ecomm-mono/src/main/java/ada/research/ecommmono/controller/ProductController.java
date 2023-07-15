@@ -1,6 +1,7 @@
 package ada.research.ecommmono.controller;
 
 import ada.research.ecommmono.model.Product;
+import ada.research.ecommmono.model.ProductResponse;
 import ada.research.ecommmono.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +18,7 @@ public class ProductController {
     private final ProductService service;
 
     @GetMapping("/filter")
-    public List<Product> filterProducts(
+    public List<ProductResponse> filterProducts(
             @RequestParam(required = false) String brand,
             @RequestParam(required = false) String productName,
             @RequestParam(required = false) String categoryName,
@@ -28,7 +29,7 @@ public class ProductController {
     }
 
     @GetMapping("/search")
-    public List<Product> searchProduct(
+    public List<ProductResponse> searchProduct(
             @RequestParam String keyword
     ){
         return service.searchProduct(keyword);

@@ -18,9 +18,8 @@ public interface CartRepository extends JpaRepository<Cart, Long> {
     List<Cart> findByUserId(long userId);
 
     @Modifying(clearAutomatically = true)
-    @Query("UPDATE Cart c SET c.quantity = c.quantity - 1 WHERE c.user.id = :userId AND " +
-            "c.product.id = :productId AND " +
-            "c.quantity > 0")
+    @Query("UPDATE Cart c SET c.quantity = c.quantity - 1, c.updatedAt = CURRENT_TIMESTAMP " +
+            "WHERE c.user.id = :userId AND c.product.id = :productId AND c.quantity > 0")
     void removeProduct(long userId, long productId);
 
     @Modifying
